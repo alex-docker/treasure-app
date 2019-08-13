@@ -37,3 +37,19 @@ func (c *Comment) Create(newComment *model.Comment) (int64, error) {
 	}
 	return createdId, nil
 }
+
+func (c *Comment) Update(comment *model.Comment) (int64, error) {
+	if err := dbutil.TXHandler(c.db, func(tx *sqlx.Tx) error {
+		_, err := repository.UpdateComment(tx, comment)
+		if err != nil {
+			return err
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return err
+	}); err != nil {
+		return 0, errors.Wrap(err, "failed comment update transaction")
+	}
+	return comment.ID, nil
+}

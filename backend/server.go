@@ -88,6 +88,7 @@ func (s *Server) Route() *mux.Router {
 
 	commentController := controller.NewComment(s.dbx)
 	r.Methods(http.MethodPost).Path("/articles/{id}/comment").Handler(authChain.Then(AppHandler{commentController.CreateComment}))
+	r.Methods(http.MethodPut).Path("/articles/{id}/comment/{comment_id}").Handler(authChain.Then(AppHandler{commentController.UpdateComment}))
 
 	r.PathPrefix("").Handler(commonChain.Then(http.StripPrefix("/img", http.FileServer(http.Dir("./img")))))
 	return r

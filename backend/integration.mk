@@ -9,6 +9,7 @@ ARTICLE_ID:=1
 ARTICLE_TITLE:=title
 ARTICLE_BODY:=body
 
+COMMENT_ID:=1
 COMMENT_BODY:=comment_body
 
 create-token:
@@ -33,7 +34,10 @@ req-articles-delete:
 	curl -v -XDELETE -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/$(ARTICLE_ID)
 
 req-comment-post:
-	curl -v -XPOST -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/1/comment -d '{"body": "$(COMMENT_BODY)"}'
+	curl -v -XPOST -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/$(ARTICLE_ID)/comment -d '{"body": "$(COMMENT_BODY)"}'
+
+req-comment-update:
+	curl -v -XPUT -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/$(ARTICLE_ID)/comment/$(COMMENT_ID) -d '{"body": "$(ARTICLE_BODY)"}'
 
 req-public:
 	curl -v $(HOST):$(PORT)/public
