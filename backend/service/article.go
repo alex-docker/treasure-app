@@ -80,3 +80,13 @@ func (a *Article) Create(newArticle *model.Article) (int64, error) {
 	}
 	return createdId, nil
 }
+
+func CombineArticleComments(article *model.Article, comments []model.Comment) model.ArticleDetail {
+	articleDetail := model.ArticleDetail{}
+	articleDetail.ID = article.ID
+	articleDetail.Title = article.Title
+	articleDetail.Body = article.Body
+	articleDetail.Comments = comments
+
+	return articleDetail
+}
