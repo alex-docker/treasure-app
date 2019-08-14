@@ -7,6 +7,11 @@ type Article struct {
 	UserID *int64 `db:"user_id" json:"user_id"`
 }
 
+type ArticleTags struct {
+	Article Article `json:"article"`
+	TagIDs  []int64 `json:"tag_ids"`
+}
+
 type ArticleDetail struct {
 	ID       int64     `json:"id"`
 	Title    string    `json:"title"`
