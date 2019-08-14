@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/jmoiron/sqlx"
-	"github.com/pkg/errors"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/gorilla/mux"
+	"github.com/jmoiron/sqlx"
+	"github.com/pkg/errors"
 
 	"github.com/voyagegroup/treasure-app/httputil"
 	"github.com/voyagegroup/treasure-app/model"
@@ -46,17 +47,27 @@ func (a *Article) Show(w http.ResponseWriter, r *http.Request) (int, interface{}
 	}
 
 	article, err := repository.FindArticle(a.dbx, aid)
+
 	if err != nil && err == sql.ErrNoRows {
 		return http.StatusNotFound, nil, err
 	} else if err != nil {
 		return http.StatusInternalServerError, nil, err
 	}
+	fmt.Println("artcle")
+	comments, err := repository.FindCommentByArticleID(a.dbx, aid)
+	if err != nil && err == sql.ErrNoRows {
+		return http.StatusNotFound, nil, err
+	} else if err != nil {
+		return http.StatusInternalServerError, nil, err
+	}
+	fmt.Println("comment")
+	articleDetail := service.CombineArticleComments(article, comments)
 
-	return http.StatusCreated, article, nil
+	return http.StatusCreated, articleDetail, nil
 }
 
 func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
-	newArticle := &model.Article{}
+	newArticle := &model.ArticleTags{}
 	contextUser, err := httputil.GetUserFromContext(r.Context())
 	if err != nil {
 		log.Print(err)
@@ -65,14 +76,12 @@ func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface
 	user, err := repository.GetUser(a.dbx, contextUser.FirebaseUID)
 
 	if err != nil {
-		fmt.Println("user")
 		return http.StatusBadRequest, nil, err
 	}
 	fmt.Println(user.ID)
-	newArticle.UserID = &user.ID
+	newArticle.Article.UserID = &user.ID
 
 	if err := json.NewDecoder(r.Body).Decode(&newArticle); err != nil {
-		fmt.Println("Decode")
 		return http.StatusBadRequest, nil, err
 	}
 
@@ -81,7 +90,7 @@ func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface
 	if err != nil {
 		return http.StatusInternalServerError, nil, err
 	}
-	newArticle.ID = id
+	newArticle.Article.ID = id
 
 	return http.StatusCreated, newArticle, nil
 }
