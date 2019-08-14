@@ -1,10 +1,12 @@
 import React from 'react';
+import Articles from './Articles';
 import firebase from './firebase';
 import { getPrivateMes, getPublicMes } from './api';
 
-class Buttons extends React.Component {
-constructor(props) {
-  super(props);
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
       user: null,
       message: '',
@@ -65,21 +67,21 @@ constructor(props) {
     }
     return (
       <div>
-        <div>{this.state.message}</div>
-        <p>{this.state.errorMessage}</p>
-        <button onClick={this.getPrivateMessage.bind(this)}>
-          Get Private Message
-        </button>
-        <button onClick={this.getPublicMessage.bind(this)}>
-          Get Public Message
-        </button>
-        {/* <button onClick={this.getPublicMessage.bind(this)}>
-          Show Articles
-        </button> */}
-        <button onClick={firebase.logout}>Logout</button>
+        <div>
+          <div>{this.state.message}</div>
+          <p>{this.state.errorMessage}</p>
+          <button onClick={this.getPrivateMessage.bind(this)}>
+            Get Private Message
+          </button>
+          <button onClick={this.getPublicMessage.bind(this)}>
+            Get Public Message
+          </button>
+          <button onClick={firebase.logout}>Logout</button>
+        </div>
+        <Articles></Articles>
       </div>
     )
   }
 }
 
-export default Buttons;
+export default App;
