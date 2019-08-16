@@ -72,6 +72,8 @@ func (s *Server) Route() *mux.Router {
 	taskController := controller.NewTaskController(s.db)
 
 	r := mux.NewRouter()
+	//r.HandleFunc("/tasks", taskController.Index()).Methods(http.MethodGet)
 	r.Methods(http.MethodGet).Path("/tasks").Handler(chain.Then(AppHandler{taskController.Index}))
+	r.Methods(http.MethodPost).Path("/tasks").Handler(chain.Then(AppHandler{taskController.Create}))
 	return r
 }
