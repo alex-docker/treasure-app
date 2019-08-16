@@ -37,3 +37,25 @@ func (t *Task) CreateTask(form models.TaskForm) error {
 	}
 	return nil
 }
+
+func (t *Task) UpdateTask(form models.TaskForm) error {
+	tx, err := t.db.Beginx()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+			log.Print("rollback.")
+			return
+		}
+	}()
+	if err != nil {
+		panic(errors.Wrap(err, "start transaction failed"))
+	}
+	_, err = repository.UpdateTask(tx, form)
+	if err != nil {
+		panic(errors.Wrap(err, "update transaction failed"))
+	}
+	if err := tx.Commit(); err != nil {
+		panic(errors.Wrap(err, "update transaction failed"))
+	}
+	return nil
+}

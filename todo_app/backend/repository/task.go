@@ -22,3 +22,11 @@ func CreateTask(db *sqlx.Tx, task models.TaskForm) (sql.Result, error) {
 	}
 	return stmt.Exec(task.Title, task.Content)
 }
+
+func UpdateTask(db *sqlx.Tx, task models.TaskForm) (sql.Result, error) {
+	stmt, err := db.Prepare(`update task set title = ?, content = ? where id = ?`)
+	if err != nil {
+		return nil, err
+	}
+	return stmt.Exec(task.Title, task.Content, task.ID)
+}
