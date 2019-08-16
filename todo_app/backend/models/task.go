@@ -9,3 +9,8 @@ type Task struct {
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
 	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
 }
+
+type TaskForm struct {
+	Title   string `json:"title"`
+	Content string `json:"content"`
+}
