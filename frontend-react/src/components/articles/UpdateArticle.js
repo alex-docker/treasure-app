@@ -50,7 +50,7 @@ class UpdateArticle extends React.Component {
       .then(token => {
         updateArticle(body, token, id)
           .then(res => {
-            if (res.status === 201) {
+            if (res.status === 204) {
               this.setState({
                 message: 'Success!!'
               });

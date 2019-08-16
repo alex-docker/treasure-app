@@ -49,3 +49,14 @@ export const updateArticle = (body, idToken, id) => {
     body: JSON.stringify(body),
   })
 }
+
+export const deleteArticle = (idToken, id) => {
+  return fetch(`${API_ENDPOINT}/articles/${id}`, {
+    method: 'delete',
+    headers: {
+      Authorization: `Bearer ${idToken}`
+    },
+    credentials: "same-origin",
+    mode: 'cors',
+  })
+}
