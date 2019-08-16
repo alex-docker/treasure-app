@@ -3,6 +3,8 @@ package controller
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -45,17 +47,40 @@ func (a *Article) Show(w http.ResponseWriter, r *http.Request) (int, interface{}
 	}
 
 	article, err := repository.FindArticle(a.db, aid)
+
 	if err != nil && err == sql.ErrNoRows {
 		return http.StatusNotFound, nil, err
 	} else if err != nil {
 		return http.StatusInternalServerError, nil, err
 	}
+	fmt.Println("artcle")
+	comments, err := repository.FindCommentByArticleID(a.db, aid)
+	if err != nil && err == sql.ErrNoRows {
+		return http.StatusNotFound, nil, err
+	} else if err != nil {
+		return http.StatusInternalServerError, nil, err
+	}
+	fmt.Println("comment")
+	articleDetail := service.CombineArticleComments(article, comments)
 
-	return http.StatusCreated, article, nil
+	return http.StatusCreated, articleDetail, nil
 }
 
 func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
-	newArticle := &model.Article{}
+	newArticle := &model.ArticleTags{}
+	contextUser, err := httputil.GetUserFromContext(r.Context())
+	if err != nil {
+		log.Print(err)
+		return http.StatusBadRequest, nil, err
+	}
+	user, err := repository.GetUser(a.db, contextUser.FirebaseUID)
+
+	if err != nil {
+		return http.StatusBadRequest, nil, err
+	}
+	fmt.Println(user.ID)
+	newArticle.Article.UserID = &user.ID
+
 	if err := json.NewDecoder(r.Body).Decode(&newArticle); err != nil {
 		return http.StatusBadRequest, nil, err
 	}
@@ -65,7 +90,7 @@ func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface
 	if err != nil {
 		return http.StatusInternalServerError, nil, err
 	}
-	newArticle.ID = id
+	newArticle.Article.ID = id
 
 	return http.StatusCreated, newArticle, nil
 }

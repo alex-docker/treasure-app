@@ -59,18 +59,25 @@ func (a *Article) Destroy(id int64) error {
 	return nil
 }
 
-func (a *Article) Create(newArticle *model.Article) (int64, error) {
+func (a *Article) Create(newArticle *model.ArticleTags) (int64, error) {
 	var createdId int64
 	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
-		result, err := repository.CreateArticle(tx, newArticle)
+		result, err := repository.CreateArticle(tx, &newArticle.Article)
 		if err != nil {
-			return err
-		}
-		if err := tx.Commit(); err != nil {
 			return err
 		}
 		id, err := result.LastInsertId()
 		if err != nil {
+			return err
+		}
+		for _, tagID := range newArticle.TagIDs {
+			_, err := repository.CreateArticleTag(tx, id, tagID)
+			if err != nil {
+				return err
+			}
+		}
+		// TODO あとでやるかもね
+		if err := tx.Commit(); err != nil {
 			return err
 		}
 		createdId = id
@@ -79,4 +86,14 @@ func (a *Article) Create(newArticle *model.Article) (int64, error) {
 		return 0, errors.Wrap(err, "failed article insert transaction")
 	}
 	return createdId, nil
+}
+
+func CombineArticleComments(article *model.Article, comments []model.Comment) model.ArticleDetail {
+	articleDetail := model.ArticleDetail{}
+	articleDetail.ID = article.ID
+	articleDetail.Title = article.Title
+	articleDetail.Body = article.Body
+	articleDetail.Comments = comments
+
+	return articleDetail
 }
