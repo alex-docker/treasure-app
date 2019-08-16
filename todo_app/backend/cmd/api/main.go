@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	server "github.com/ry-itto/treasure-app/todo_app/server"
+	server "github.com/ry-itto/treasure-app/todo_app/backend"
 
 	"github.com/joho/godotenv"
 )
