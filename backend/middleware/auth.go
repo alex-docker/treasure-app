@@ -32,6 +32,7 @@ func (auth *Auth) Handler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		idToken, err := getTokenFromHeader(r)
 		if err != nil {
+			log.Print(err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}

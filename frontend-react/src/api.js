@@ -25,14 +25,14 @@ export const getArticles = () => {
 }
 
 export const postArticle = (body, idToken) => {
-  console.log(body)
   return fetch(`${API_ENDPOINT}/articles`, {
-    method: 'POST',
+    method: "post",
     headers: {
       Authorization: `Bearer ${idToken}`,
-      'Content-Type': 'application/json; charset=utf-8',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
     },
-    mode: 'no-cors',
+    credentials: "same-origin",
+    mode: 'cors',
     body: JSON.stringify(body),
   })
 }

@@ -76,18 +76,20 @@ func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface
 	user, err := repository.GetUser(a.db, contextUser.FirebaseUID)
 
 	if err != nil {
+		log.Print(err)
 		return http.StatusBadRequest, nil, err
 	}
-	fmt.Println(user.ID)
 	newArticle.Article.UserID = &user.ID
 
 	if err := json.NewDecoder(r.Body).Decode(&newArticle); err != nil {
+		log.Print(err)
 		return http.StatusBadRequest, nil, err
 	}
 
 	articleService := service.NewArticle(a.db)
 	id, err := articleService.Create(newArticle)
 	if err != nil {
+		log.Print(err)
 		return http.StatusInternalServerError, nil, err
 	}
 	newArticle.Article.ID = id
