@@ -59,3 +59,25 @@ func (t *Task) UpdateTask(form models.TaskForm) error {
 	}
 	return nil
 }
+
+func (t *Task) DeleteTask(id int) error {
+	tx, err := t.db.Beginx()
+	defer func() {
+		if err := recover(); err != nil {
+			tx.Rollback()
+			log.Print("rollback.")
+			return
+		}
+	}()
+	if err != nil {
+		panic(errors.Wrap(err, "start transaction failed"))
+	}
+	_, err = repository.DeleteTask(tx, id)
+	if err != nil {
+		panic(errors.Wrap(err, "delete transaction failed"))
+	}
+	if err := tx.Commit(); err != nil {
+		panic(errors.Wrap(err, "delete transaction failed"))
+	}
+	return nil
+}

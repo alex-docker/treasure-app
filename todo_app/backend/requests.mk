@@ -18,4 +18,5 @@ req-tasks-post:
 req-tasks-update:
 	curl -v -XPUT $(HOST):$(PORT)/tasks/$(TASK_ID) -d '{"title": "$(UPDATE_TASK_TITLE)", "content": "$(UPDATE_TASK_TASK_CONTENT)"}'
 
-
+req-tasks-delete:
+	curl -v -XDELETE $(HOST):$(PORT)/tasks/$(TASK_ID)

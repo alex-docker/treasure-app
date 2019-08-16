@@ -66,3 +66,21 @@ func (t *Task) Update(w http.ResponseWriter, r *http.Request) (int, interface{},
 	}
 	return http.StatusOK, nil, nil
 }
+
+func (t *Task) Delete(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
+	vars := mux.Vars(r)
+	tmpID, ok := vars["id"]
+	if !ok {
+		return http.StatusBadRequest, nil, errors.New("please input ID to update")
+	}
+	id, err := strconv.Atoi(tmpID)
+	if err != nil {
+		return http.StatusBadRequest, nil, err
+	}
+	s := service.NewTaskService(t.db)
+	err = s.DeleteTask(id)
+	if err != nil {
+		return http.StatusBadRequest, nil, err
+	}
+	return http.StatusOK, nil, nil
+}
