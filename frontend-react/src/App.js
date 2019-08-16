@@ -4,6 +4,7 @@ import Articles from './components/articles/Articles';
 import Private from './components/Private';
 import Public from './components/Public';
 import PostArticle from './components/articles/PostArticle';
+import UpdateArticle from './components/articles/UpdateArticle';
 // import firebase from './firebase';
 // import { getPrivateMes, getPublicMes } from './api';
 
@@ -22,6 +23,7 @@ const App = () => (
     <Route path='/private' component={Private}></Route>
     <Route path='/public' component={Public}></Route>
     <Route path='/articles/post' component={PostArticle}></Route>
+    <Route path='/articles/:id/update' component={UpdateArticle}></Route>
   </BrowserRouter>
 )
 

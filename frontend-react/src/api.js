@@ -37,8 +37,8 @@ export const postArticle = (body, idToken) => {
   })
 }
 
-export const updateArticle = (body, idToken) => {
-  return fetch(`${API_ENDPOINT}/articles`, {
+export const updateArticle = (body, idToken, id) => {
+  return fetch(`${API_ENDPOINT}/articles/${id}`, {
     method: "put",
     headers: {
       Authorization: `Bearer ${idToken}`,

@@ -1,5 +1,6 @@
 import React from 'react';
 import firebase from '../../firebase';
+import { updateArticle } from '../../api';
 
 class UpdateArticle extends React.Component {
   constructor(props) {
@@ -39,16 +40,15 @@ class UpdateArticle extends React.Component {
 
   handleUpdateArticle() {
     const body = {
-      article: {
-        title: this.state.title,
-        body: this.state.body
-      },
-      tags: [1, 2]
+      title: this.state.title,
+      body: this.state.body
     }
+    const {params} = this.props.match
+    const id = parseInt(params.id, 10)
     this.state.user 
       .getIdToken()
       .then(token => {
-        postArticle(body, token)
+        updateArticle(body, token, id)
           .then(res => {
             if (res.status === 201) {
               this.setState({
@@ -78,3 +78,5 @@ class UpdateArticle extends React.Component {
     )
   }
 }
+
+export default UpdateArticle;
