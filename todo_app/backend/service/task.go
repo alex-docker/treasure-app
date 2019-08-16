@@ -4,6 +4,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/gommon/log"
 	"github.com/pkg/errors"
+	"github.com/ry-itto/treasure-app/todo_app/backend/models"
 	"github.com/ry-itto/treasure-app/todo_app/backend/repository"
 )
 
@@ -21,13 +22,13 @@ func (t *Task) CreateTask(form models.TaskForm) error {
 		if err := recover(); err != nil {
 			tx.Rollback()
 			log.Print("rollback.")
-			return err
+			return
 		}
 	}()
 	if err != nil {
 		panic(errors.Wrap(err, "start transaction failed"))
 	}
-	_, err = repository.CreateTask(t.db, form)
+	_, err = repository.CreateTask(tx, form)
 	if err != nil {
 		panic(errors.Wrap(err, "insert transaction failed"))
 	}
