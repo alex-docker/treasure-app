@@ -1,40 +1,26 @@
 import React from 'react';
-import firebase from './firebase';
-import { getPrivateMes } from './api';
+import { getPublicMes } from '../api';
 
-class Private extends React.Component {
+class Public extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
       message: '',
     }
     this.errorMessage = '';
   }
-
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.setState({user: user});
-        this.getPrivateMessage();
-      } else {
-        this.setState({
-          user: null
-        });
-      }
-    });
+    this.getPublicMessage()
   }
-
-  getPrivateMessage() {
-    this.state.user
-      .getIdToken()
-      .then(token => {
-        return getPrivateMes(token);
+  getPublicMessage() {
+    getPublicMes()
+      .then(resp => {
+        return resp.json()
       })
       .then(resp => {
         this.setState({
           message: resp.message
-        });
+        })
       })
       .catch(error => {
         this.setState({
@@ -53,4 +39,4 @@ class Private extends React.Component {
   }
 }
 
-export default Private;
+export default Public;

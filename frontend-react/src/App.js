@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom'
-import Articles from './Articles';
-import Private from './Private';
-import Public from './Public';
-import PostArticle from './PostArticle';
+import Articles from './components/articles/Articles';
+import Private from './components/Private';
+import Public from './components/Public';
+import PostArticle from './components/articles/PostArticle';
 // import firebase from './firebase';
 // import { getPrivateMes, getPublicMes } from './api';
 

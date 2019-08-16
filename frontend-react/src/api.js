@@ -36,3 +36,16 @@ export const postArticle = (body, idToken) => {
     body: JSON.stringify(body),
   })
 }
+
+export const updateArticle = (body, idToken) => {
+  return fetch(`${API_ENDPOINT}/articles`, {
+    method: "put",
+    headers: {
+      Authorization: `Bearer ${idToken}`,
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    },
+    credentials: "same-origin",
+    mode: 'cors',
+    body: JSON.stringify(body),
+  })
+}

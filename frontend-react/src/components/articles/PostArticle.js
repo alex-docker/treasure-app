@@ -1,6 +1,6 @@
 import React from 'react';
-import firebase from './firebase';
-import { postArticle } from './api';
+import firebase from '../../firebase';
+import { postArticle } from '../../api';
 
 class PostArticle extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Article from './Article';
-import { getArticles } from './api';
+import { getArticles } from '../../api';
 
 class Articles extends React.Component {
 
