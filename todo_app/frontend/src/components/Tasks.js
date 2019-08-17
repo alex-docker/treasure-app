@@ -1,7 +1,6 @@
 import React from 'react';
 import Task from './Task';
 import { fetchTasks } from '../api';
-import { Box } from '@material-ui/core';
 
 class Tasks extends React.Component {
   constructor(props) {
@@ -30,7 +29,7 @@ class Tasks extends React.Component {
     return (
       <div>
         {this.state.tasks.map(task => {
-            return <Task props={task}></Task>
+            return <Task props={task} key={task.id}></Task>
         })}
       </div>
     )

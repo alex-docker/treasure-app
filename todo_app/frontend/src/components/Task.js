@@ -6,12 +6,11 @@ import { CardContent, CardActions, Button, Box } from '@material-ui/core';
 const Task = (props) => (
   <Box mt={1}>
     <Card>
-      {console.log(props)}
       <CardContent style={{textAlign: "left"}}>
         <Typography variant="h4" color="textPrimary">
           {props.props.title}
         </Typography>
-        <Typography variant="subtitle" color="textSecondary">
+        <Typography variant="body1" color="textSecondary">
           {props.props.content}
         </Typography>
       </CardContent>
