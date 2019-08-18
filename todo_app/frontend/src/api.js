@@ -4,10 +4,11 @@ export const fetchTasks = () => {
     return fetch(`${API_ENDPOINT}/tasks`)
 }
 
-export const createTask = (title, content) => {
+export const createTask = (title, content, dueDate) => {
     const reqBody = {
         title: title,
         content: content,
+        due_date: dueDate
     }
     return fetch(`${API_ENDPOINT}/tasks`,{
         method: 'POST',
@@ -15,10 +16,12 @@ export const createTask = (title, content) => {
     });
 }
 
-export const updateTask = (id, title, content) => {
+export const updateTask = (id, title, content, dueDate) => {
+    console.log(dueDate)
     const reqBody = {
         title: title,
-        content: content
+        content: content,
+        due_date: dueDate
     }
     return fetch(`${API_ENDPOINT}/tasks/${id}`, {
         method: 'POST',

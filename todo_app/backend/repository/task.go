@@ -16,19 +16,19 @@ func FindAllTasks(db *sqlx.DB) ([]models.Task, error) {
 }
 
 func CreateTask(db *sqlx.Tx, task models.TaskForm) (sql.Result, error) {
-	stmt, err := db.Prepare(`insert into task(title, content) values (?, ?)`)
+	stmt, err := db.Prepare(`insert into task(title, content, due_date) values (?, ?, ?)`)
 	if err != nil {
 		return nil, err
 	}
-	return stmt.Exec(task.Title, task.Content)
+	return stmt.Exec(task.Title, task.Content, task.DueDate)
 }
 
 func UpdateTask(db *sqlx.Tx, task models.TaskForm) (sql.Result, error) {
-	stmt, err := db.Prepare(`update task set title = ?, content = ? where id = ?`)
+	stmt, err := db.Prepare(`update task set title = ?, content = ? ,due_date  = ? where id = ?`)
 	if err != nil {
 		return nil, err
 	}
-	return stmt.Exec(task.Title, task.Content, task.ID)
+	return stmt.Exec(task.Title, task.Content, task.DueDate, task.ID)
 }
 
 func DeleteTask(db *sqlx.Tx, id int) (sql.Result, error) {
