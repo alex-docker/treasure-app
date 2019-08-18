@@ -74,7 +74,9 @@ func (s *Server) Route() *mux.Router {
 	r := mux.NewRouter()
 	r.Methods(http.MethodGet).Path("/tasks").Handler(chain.Then(AppHandler{taskController.Index}))
 	r.Methods(http.MethodPost).Path("/tasks").Handler(chain.Then(AppHandler{taskController.Create}))
+	//r.Methods(http.MethodPatch).Path("/tasks/{id}").Handler(chain.Then(AppHandler{taskController.Update}))
+	//r.Methods(http.MethodDelete).Path("/tasks/{id}").Handler(chain.Then(AppHandler{taskController.Delete}))
 	r.Methods(http.MethodPost).Path("/tasks/{id}").Handler(chain.Then(AppHandler{taskController.Update}))
-	r.Methods(http.MethodDelete).Path("/tasks/{id}").Handler(chain.Then(AppHandler{taskController.Delete}))
+	r.Methods(http.MethodPost).Path("/tasks/{id}/delete").Handler(chain.Then(AppHandler{taskController.Delete}))
 	return r
 }

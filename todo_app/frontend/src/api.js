@@ -30,9 +30,8 @@ export const deleteTask = (id) => {
     const reqBody = {
         hoge: 'hoge'
     }
-    return fetch(`${API_ENDPOINT}/tasks/${id}`, {
-        method: 'delete',
+    return fetch(`${API_ENDPOINT}/tasks/${id}/delete`, {
+        method: 'POST',
         body: JSON.stringify(reqBody),
-        headers: {"Access-Control-Request-Method": "DELETE"}
     });
 }
