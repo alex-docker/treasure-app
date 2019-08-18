@@ -22,9 +22,6 @@ const style = {
   },
   formControl: {
     margin: 1,
-  },
-  submitButton: {
-    
   }
 }
 
@@ -104,7 +101,7 @@ class Bar extends React.Component {
                   <Input aria-describedby="my-helper-text" margin="dense" onChange={this.handleContentChange.bind(this)} value={this.state.content} id="content" multiline required></Input>
                   <FormHelperText id="my-helper-text">Content for your task</FormHelperText>
                 </FormControl>
-                <Button variant="contained" style={style.submitButton} onClick={this.handleCreateTask.bind(this)} color="primary">Submit</Button>
+                <Button variant="contained" onClick={this.handleCreateTask.bind(this)} color="primary">Submit</Button>
               </FormGroup>
             </Container>
           </Modal>
