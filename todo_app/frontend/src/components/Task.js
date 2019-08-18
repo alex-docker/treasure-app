@@ -48,6 +48,14 @@ class Task extends React.Component {
     };
   }
 
+  dateFormat(date) {
+    if (date == null) {
+      return ''
+    }
+    const d = new Date(date)
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+  }
+
   handleUpdateButtonClick() {
     this.setState({
       updateModalIsOpen: true
@@ -124,7 +132,7 @@ class Task extends React.Component {
               {this.props.props.content}
             </Typography>
             <Typography variant="body2" color="textSecondary">
-              Due Date: {this.props.props.due_date}
+              Due Date: {this.dateFormat(this.props.props.due_date)}
             </Typography>
           </CardContent>
           <CardActions>
